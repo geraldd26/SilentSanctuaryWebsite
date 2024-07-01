@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silent Sanctuary Album</title>
+    <link rel="stylesheet" href="members.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kulim+Park&display=swap">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="description.html">DESCRIPTION</a></li>
+            <li><a href="members.html" class="active">MEMBERS</a></li>
+            <li><a href="songs.html">SONGS</a></li>
+            <li><a href="lyrics.html">LYRICS</a></li>
+        </ul>
+    </nav>
+
+    <div class="logo">
+        <a href="index.html">
+            <img src="logo.png" width="400">
+        </a>
+    </div>
+
+    <div class="card">
+        <p class="hover-image-1"><span>JASON</span></p>
+        <p class="hover-image-2"><span>KIM</span></p>
+        <p class="hover-image-3"><span>RAYMUND</span></p>
+        <p class="hover-image-4"><span>ANJO</span></p>
+        <p class="hover-image-5"><span>ALLEN</span></p>
+    </div>
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const cardElements = document.querySelectorAll('.card p');
+
+    cardElements.forEach(card => {
+        card.addEventListener('click', () => {
+            if (card.classList.contains('expanded')) {
+                card.classList.remove('expanded');
+            } else {
+                cardElements.forEach(el => el.classList.remove('expanded'));
+                card.classList.add('expanded');
+            }
+        });
+    });
+});
+
+    </script>
+</body>
+</html>

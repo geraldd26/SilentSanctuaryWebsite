@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silent Sanctuary Album</title>
+    <link rel="stylesheet" href="ge.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kulim+Park&display=swap">
+</head>
+<body>
+    <video autoplay loop muted plays-inline class="bg-video">
+        <source src="biyu.mp4" type="video/mp4">
+    </video>
+    <nav>
+        <ul>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="description.html">DESCRIPTION</a></li> 
+            <li><a href="members.html">MEMBERS</a></li>
+            <li><a href="songs.html" class="active">SONGS</a></li>
+            <li><a href="lyrics.html">LYRICS</a></li>
+        </ul>
+    </nav>
+    
+    <div class="logo">
+        <a href="index.html"> 
+            <img src="logo.png" width="400">
+        </a>
+    </div>
+    
+
+    <div class="silent">
+        <img src="silents.jfif" width="30px">
+    </div>
+    <div id="playlist-header">
+        <table>
+            <tr>
+                <td>
+                    <img src="pag.jpg" width="230px">
+                </td>
+                <td>
+                    <p>Album</p>
+                    <h2>Fuchsiang Pag-Ibig</h2>
+                    <a href="https://open.spotify.com/artist/4nGp682WMiKS4X217kPw8C">Silent Sanctuary • 2007 • 12 songs, 58 min 34 sec</a>
+                    
+                </td>
+            </tr>
+            
+        </table>
+        
+    </div>
+    
+    <div class="button">
+        <button class="audio-buttons-1">
+            <img src="bck-removebg-preview.png" width="65px" height="65px">
+        </button>
+        <button class="audio-buttons-2">
+            <img id="play-button" src="play-removebg-preview.png" width="50px">
+        </button>
+        <button class="audio-buttons-3">
+            <img src="forwrd-removebg-preview.png" width="50px">
+        </button>
+    </div>
+
+    <audio id="audio" controls>
+        <source id="audioSource" src=""> </source>
+    </audio>
+
+    <br><br>
+
+    <table class="song-table">
+        <thead>
+            <tr>
+                <td>#</td>
+                <td>Title</td>
+                <td>Artist</td>
+                <td><i class="fas fa-clock"></i></td>
+
+            </tr>
+        </thead>
+        <tbody id="song-list"></tbody>
+    </table>
+    <br><br>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log("DOM fully loaded and parsed");
+
+        const audio = document.getElementById('audio');
+        const source = document.getElementById('audioSource');
+        const playButton = document.getElementById('play-button');
+        const prevButton = document.querySelector('.audio-buttons-1');
+        const nextButton = document.querySelector('.audio-buttons-3');
+
+        const music = [
+            { id: 1, title: "Rebound", singer: "Silent Sanctuary", duration: "4:30", song: "rebound.mp3" },
+            { id: 2, title: "Sandali Lang", singer: "Silent Sanctuary", duration: "5:58", song: "sandali.mp3" },
+            { id: 3, title: "Ikaw Lamang", singer: "Silent Sanctuary", duration: "5:06", song: "ikaw lamang.mp3" },
+            { id: 4, title: "Kundiman", singer: "Silent Sanctuary", duration: "5:39", song: "kundiman.mp3" },
+            { id: 5, title: "Ingat ka", singer: "Silent Sanctuary", duration: "4:30", song: "ingat.mp3" },
+            { id: 6, title: "Pink 5ive", singer: "Silent Sanctuary", duration: "4:32", song: "pink.mp3" },
+            { id: 7, title: "For Tonight", singer: "Silent Sanctuary", duration: "4:28", song: "tonight.mp3" },
+            { id: 8, title: "Parol", singer: "Silent Sanctuary", duration: "3:24", song: "parol.mp3" },
+            { id: 9, title: "Kismet", singer: "Silent Sanctuary", duration: "4:31", song: "kismet.mp3" },
+            { id: 10, title: "Nagtahan", singer: "Silent Sanctuary", duration: "4:11", song: "nagtahan.mp3" },
+            { id: 11, title: "Summer Song", singer: "Silent Sanctuary", duration: "5:38", song: "summer.mp3" },
+            { id: 12, title: "14", singer: "Silent Sanctuary", duration: "6:01", song: "14.mp3" },
+        ];
+
+        console.log("Music array:", music);
+
+        let currentSongIndex = 0;
+
+        for (let i = 0; i < music.length; i++) {
+            console.log(`Adding song: ${music[i].title}`);
+            document.getElementById('song-list').innerHTML +=
+            `<tr id="song-${music[i].id}" onClick="playMusic(${i});">
+                <td class="song-number" data-id="${music[i].id}"></td>
+                <td>${music[i].title}</td>
+                <td>${music[i].singer}</td>
+                <td>${music[i].duration}</td>
+            </tr>`;
+        }
+
+        console.log("Finished populating song list.");
+
+        playButton.addEventListener('click', togglePlayPause);
+        prevButton.addEventListener('click', playPreviousSong);
+        nextButton.addEventListener('click', playNextSong);
+
+        audio.addEventListener('play', () => {
+            playButton.src = "pause-removebg-preview.png";
+        });
+
+        audio.addEventListener('pause', () => {
+            playButton.src = "play-removebg-preview.png";
+        });
+
+        function playMusic(index) {
+            currentSongIndex = index;
+            const song = music[currentSongIndex];
+            source.src = decodeURIComponent(song.song);
+            audio.load();
+            audio.play();
+
+            const currentlyPlaying = document.querySelector('.playing');
+            if (currentlyPlaying) {
+                currentlyPlaying.classList.remove('playing');
+            }
+
+            const newPlaying = document.getElementById(`song-${song.id}`);
+            newPlaying.classList.add('playing');
+        }
+
+        function togglePlayPause() {
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
+        }
+
+        function playPreviousSong() {
+            if (currentSongIndex > 0) {
+                playMusic(currentSongIndex - 1);
+            }
+        }
+
+        function playNextSong() {
+            if (currentSongIndex < music.length - 1) {
+                playMusic(currentSongIndex + 1);
+            }
+        }
+
+        window.playMusic = playMusic;
+    });
+    </script>
+
+<footer>
+    <p>Copyright © 2024 Website Fandom All Rights Reserved.<br>Website developed by: Gerald A. Eleserio</p>
+</footer>
+</body>
+</html>
